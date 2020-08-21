@@ -5,6 +5,7 @@ import {SingleUserType,FormValues} from './data'
 import ProTable,{ActionType} from '@ant-design/pro-table';
 import {getRemoteList,EditHandle,AddHandle} from './services';
 import UserModal from './components/UsersModal'
+import { OptionsType } from '@ant-design/pro-table/lib/component/toolBar';
 
 interface UserPorps {
   users:UserState,
@@ -98,13 +99,7 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
     console.log(id,values);
     if(result){
       setModalVisible(false);
-      dispatch({
-        type:'users/getRomote',
-        payload:{
-          page:users.meta.page,
-          per_page:users.meta.per_page
-        }
-      })
+      onReset()
       setConfirmLoading(false)
       message.success(`${id===0 ? 'Add' : 'Edit'} Success` )
 
@@ -132,11 +127,13 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
     }
   }
   // @ts-ignore
+
+  //这个方法是基于 ProTable组件中的request方法来做的
   const onreload = ()=>{
     ref.current.reload();
   }
 
-  const paginationHandle = (page, pageSize)=>{
+  const paginationHandle = (page:number, pageSize:number)=>{
     console.log(page,pageSize);
     dispatch({
       type:"users/getRomote",
@@ -146,7 +143,7 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
       }
     })
   }
-  const onShowSizeChange = (current,size)=>{
+  const onShowSizeChange = (current:number,size:number)=>{
     console.log(current,size);
     dispatch({
       type:"users/getRomote",
@@ -156,10 +153,19 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
       }
     })
   }
+
+  const onReset = ()=>{
+    dispatch({
+      type:"users/getRomote",
+      payload:{
+        page:users.meta.page,
+        per_page:users.meta.per_page
+      }
+    })
+  }
   return(
     <div className="list-table">
-      <Button type="primary" onClick={onclick}>添加</Button>
-      <Button onClick={onreload}>reload</Button>
+
       <ProTable
         columns={columns}
         // request={requestHandle}
@@ -169,6 +175,19 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
         rowKey='id'
         loading={userListLoading}
         pagination={false}
+        options={{
+          density: true,
+          fullScreen: true,
+          reload: (()=>{
+            onReset()
+          }),
+          setting:true
+        }}
+        headerTitle="User List"
+        toolBarRender={()=>[
+          <Button type="primary" onClick={onclick}>添加</Button>,
+          <Button onClick={onReset}>reload</Button>
+        ]}
       />
 
       {/*分页*/}

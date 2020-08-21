@@ -44,7 +44,6 @@ const userModel:UsersModelType = {
   },
   reducers:{
     getList(state,action){
-      console.log(action.payload);
       return action.payload
     }
   },
