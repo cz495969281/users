@@ -1,5 +1,5 @@
 import React,{useEffect,FC} from 'react';
-import {Modal,Button,Form,Input,message,DatePicker} from 'antd';
+import {Modal,Button,Form,Input,message,DatePicker,Switch} from 'antd';
 import ex from 'umi/dist';
 import moment from 'moment';
 import {SingleUserType,FormValues} from '../data'
@@ -23,7 +23,8 @@ const UserModal:FC<UserModalProps> = (props:any)=>{
     }else{
       form.setFieldsValue({
         ...record,
-        create_time:moment(record.create_time)
+        create_time:moment(record.create_time),
+        stutas:Boolean(record.status)
       })
     }
 
@@ -51,7 +52,7 @@ const UserModal:FC<UserModalProps> = (props:any)=>{
       >
         <Form
           name="basic"
-          // initialValues={record}
+          initialValues={{status:true}}
           form={form}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
@@ -82,8 +83,10 @@ const UserModal:FC<UserModalProps> = (props:any)=>{
           <Form.Item
             name="status"
             label="Status"
+            valuePropName="checked"
           >
-            <Input />
+            {/*<Input />*/}
+            <Switch />
           </Form.Item>
         </Form>
       </Modal>
