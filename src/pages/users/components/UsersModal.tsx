@@ -4,7 +4,10 @@ import ex from 'umi/dist';
 import moment from 'moment';
 import {SingleUserType,FormValues} from '../data'
 
-
+const layout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 20 },
+};
 
 interface UserModalProps {
   visible:boolean,
@@ -43,7 +46,7 @@ const UserModal:FC<UserModalProps> = (props:any)=>{
   return(
     <>
       <Modal
-        title={"显示内容"}
+        title={record ? "修改:  ID"+record.id : "新增"}
         visible={visible}
         onOk={onOk}
         onCancel={closeHandle}
@@ -52,6 +55,7 @@ const UserModal:FC<UserModalProps> = (props:any)=>{
 
       >
         <Form
+          {...layout}
           name="basic"
           initialValues={{status:true}}
           form={form}

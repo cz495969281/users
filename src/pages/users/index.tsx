@@ -52,7 +52,7 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
       key: 'action',
       valueType:'option',
       render: (text: any, record: SingleUserType) => [
-          <a onClick={()=>{editHandle(record)}}>
+          <a key="action" onClick={()=>{editHandle(record)}}>
             编辑
           </a>,
           <Popconfirm
@@ -62,7 +62,7 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
             okText="yes"
             cancelText="no"
           >
-            <a>删除</a>
+            <a key="action">删除</a>
           </Popconfirm>
 
       ],
