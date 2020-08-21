@@ -16,7 +16,7 @@ const errorHandler = function(error: { response: { status: any; headers: any; };
       return undefined
     }
 
-  // throw error; // 如果throw. 错误将继续抛出.
+  throw error; // 如果throw. 错误将继续抛出.
 
   // 如果return, 则将值作为返回. 'return;' 相当于return undefined, 在处理结果时判断response是否有值即可.
   // return {some: 'data'};

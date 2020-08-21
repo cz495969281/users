@@ -6,7 +6,7 @@ import ProTable from '@ant-design/pro-table';
 import {getRemoteList,EditHandle,AddHandle} from './services';
 import UserModal from './components/UsersModal'
 import { OptionsType } from '@ant-design/pro-table/lib/component/toolBar';
-import { ProColumns } from '@ant-design/pro-table/es/Table';
+import { ProColumns } from '@ant-design/pro-table/lib/Table';
 
 interface UserPorps {
   users:UserState,
@@ -28,21 +28,20 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
 
   const columns:ProColumns<SingleUserType>[] = [
     {
-      title: 'id',
+      title: 'ID',
       dataIndex: 'id',
       valueType:'digit',
       key: 'id'
     },
     {
-      title: 'name',
+      title: 'Name',
       dataIndex: 'name',
       valueType:'text',
       key: 'name',
-      render: (text:any) => <a>{text}</a>,
-
+      render: (text:any) =>[<a key="name">{text}</a>]
     },
     {
-      title: 'create_time',
+      title: 'Create_time',
       dataIndex: 'create_time',
       valueType:'dateTime',
       key: 'create_time',
@@ -51,10 +50,11 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
       title: 'Action',
       key: 'action',
       valueType:'option',
-      render: (text: any, record: SingleUserType) => [
-          <a key="action" onClick={()=>{editHandle(record)}}>
+      render: (text: any, record: SingleUserType) => (
+        <span>
+          <a key="edit" onClick={()=>{editHandle(record)}}>
             编辑
-          </a>,
+          </a>&nbsp;&nbsp;&nbsp;&nbsp;
           <Popconfirm
             title={"确定要删除吗"}
             onConfirm={()=>{confirm(record.id)}}
@@ -62,10 +62,10 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
             okText="yes"
             cancelText="no"
           >
-            <a key="action">删除</a>
+            <a key="delete">删除</a>
           </Popconfirm>
-
-      ],
+        </span>
+      )
     },
   ];
   const confirm = (id:number)=>{
@@ -176,14 +176,13 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
   }
   return(
     <div className="list-table">
-
       <ProTable
         columns={columns}
         // request={requestHandle}
         dataSource={users.data}
         // actionRef={ref}
         search={false}
-        rowKey='id'
+        rowKey="id"
         loading={userListLoading}
         pagination={false}
         options={{
@@ -196,8 +195,8 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
         }}
         headerTitle="User List"
         toolBarRender={()=>[
-          <Button type="primary" onClick={onclick}>添加</Button>,
-          <Button onClick={onReset}>reload</Button>
+          <Button key="add" type="primary" onClick={onclick}>添加</Button>,
+          <Button key="reload" onClick={onReset}>reload</Button>
         ]}
       />
 

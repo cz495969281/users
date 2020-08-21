@@ -1,5 +1,5 @@
 import React,{useEffect,FC} from 'react';
-import {Modal,Button,Form,Input,message,DatePicker,Switch} from 'antd';
+import {Modal,Form,Input,message,DatePicker,Switch} from 'antd';
 import ex from 'umi/dist';
 import moment from 'moment';
 import {SingleUserType,FormValues} from '../data'
