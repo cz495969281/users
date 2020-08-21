@@ -10,7 +10,8 @@ interface UserModalProps {
   visible:boolean,
   closeHandle:()=>void, //closeHandle是一个函数没有返回值
   record:SingleUserType|undefined,
-  onFinish:(values:FormValues)=>void
+  onFinish:(values:FormValues)=>void,
+  confirmLoading:boolean
 }
 
 const UserModal:FC<UserModalProps> = (props:any)=>{

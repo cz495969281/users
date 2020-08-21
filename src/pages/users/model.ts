@@ -63,7 +63,7 @@ const userModel:UsersModelType = {
     *edit({ payload:{id,values}},{put,call,select}){
       const data = yield call(EditHandle,{id,values});
       if (data){
-        const {page,per_page} = yield select((state)=>{return state.users.meta})
+        const {page,per_page} = yield select((state:any)=>{return state.users.meta})
         yield put({
           type: 'getRomote',
           payload: {
@@ -80,7 +80,7 @@ const userModel:UsersModelType = {
     *delete({ payload:{id}},{put,call,select}){
       const data = yield call(DeleteHandle,{id});
       if (data){
-        const {page,per_page} = yield select((state)=>{return state.users.meta})
+        const {page,per_page} = yield select((state:any)=>{return state.users.meta})
         // console.log(page,per_page);
         yield put({
           type:'getRomote',
@@ -98,7 +98,7 @@ const userModel:UsersModelType = {
     *add({ payload:{values}},{put,call,select}){
       const data = yield call(AddHandle,{values})
       if(data){
-        const {page,per_page} = yield select((state)=>{return state.users.meta})
+        const {page,per_page} = yield select((state:any)=>{return state.users.meta})
         // console.log(page,per_page);
         yield put({
           type:'getRomote',

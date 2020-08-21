@@ -2,10 +2,11 @@ import React, { useEffect, useState,FC,useRef,forwardRef} from 'react';
 import {Table,Popconfirm,Button,Pagination,message} from 'antd';
 import { connect,Dispatch,Loading,UserState } from 'umi';
 import {SingleUserType,FormValues} from './data'
-import ProTable,{ActionType} from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
 import {getRemoteList,EditHandle,AddHandle} from './services';
 import UserModal from './components/UsersModal'
 import { OptionsType } from '@ant-design/pro-table/lib/component/toolBar';
+import { ProColumns } from '@ant-design/pro-table/es/Table';
 
 interface UserPorps {
   users:UserState,
@@ -13,37 +14,47 @@ interface UserPorps {
   userListLoading:boolean
 }
 
+interface ActionType {
+  reload: () => void;
+  fetchMore: () => void;
+  reset: () => void;
+}
+
 const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
   const [modalVisible,setModalVisible] = useState(false);
   const [record,setRecord] = useState<SingleUserType|undefined>(undefined);
   const [confirmLoading,setConfirmLoading] = useState(false)
-  const ref = useRef<ActionType>();
-  const columns = [
+  // const ref = useRef<ActionType>();
+
+  const columns:ProColumns<SingleUserType>[] = [
     {
       title: 'id',
       dataIndex: 'id',
+      valueType:'digit',
       key: 'id'
     },
     {
       title: 'name',
       dataIndex: 'name',
+      valueType:'text',
       key: 'name',
-      render: (text:string) => <a>{text}</a>,
+      render: (text:any) => <a>{text}</a>,
 
     },
     {
       title: 'create_time',
       dataIndex: 'create_time',
+      valueType:'dateTime',
       key: 'create_time',
     },
     {
       title: 'Action',
       key: 'action',
-      render: (text: string, record: SingleUserType) => (
-        <span>
-          <a href="#" onClick={()=>{editHandle(record)}}>
+      valueType:'option',
+      render: (text: any, record: SingleUserType) => [
+          <a onClick={()=>{editHandle(record)}}>
             编辑
-          </a>&nbsp;&nbsp;&nbsp;
+          </a>,
           <Popconfirm
             title={"确定要删除吗"}
             onConfirm={()=>{confirm(record.id)}}
@@ -51,10 +62,10 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
             okText="yes"
             cancelText="no"
           >
-            <a href="#">删除</a>
+            <a>删除</a>
           </Popconfirm>
-        </span>
-      ),
+
+      ],
     },
   ];
   const confirm = (id:number)=>{
@@ -130,10 +141,10 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
 
   //这个方法是基于 ProTable组件中的request方法来做的
   const onreload = ()=>{
-    ref.current.reload();
+    // ref.current.reload();
   }
 
-  const paginationHandle = (page:number, pageSize:number)=>{
+  const paginationHandle = (page:number, pageSize?:number)=>{
     console.log(page,pageSize);
     dispatch({
       type:"users/getRomote",
@@ -170,7 +181,7 @@ const users: FC<UserPorps> = ({users,dispatch,userListLoading}) => {
         columns={columns}
         // request={requestHandle}
         dataSource={users.data}
-        actionRef={ref}
+        // actionRef={ref}
         search={false}
         rowKey='id'
         loading={userListLoading}
