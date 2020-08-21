@@ -1,6 +1,7 @@
 import React,{useEffect,FC} from 'react';
-import {Modal,Button,Form,Input,message} from 'antd';
+import {Modal,Button,Form,Input,message,DatePicker} from 'antd';
 import ex from 'umi/dist';
+import moment from 'moment';
 import {SingleUserType,FormValues} from '../data'
 
 
@@ -20,7 +21,10 @@ const UserModal:FC<UserModalProps> = (props:any)=>{
     if (record === undefined){
       form.resetFields()
     }else{
-      form.setFieldsValue(record)
+      form.setFieldsValue({
+        ...record,
+        create_time:moment(record.create_time)
+      })
     }
 
   },[visible])
@@ -71,7 +75,8 @@ const UserModal:FC<UserModalProps> = (props:any)=>{
             name="create_time"
             label="Create_time"
           >
-            <Input />
+            {/*<Input />*/}
+            <DatePicker showTime />
           </Form.Item>
 
           <Form.Item
